@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from './components/Sidebar';
-import Dashboard from './components/Dashboard';
-import Accounts from './components/Accounts';
-import Finance from './components/Finance';
-import Strategy from './components/Strategy';
-import Kanban from './components/Kanban';
-import { Account, FinanceRecord } from './types';
-import { MOCK_ACCOUNTS } from './constants';
+import Sidebar from './components/Sidebar.tsx';
+import Dashboard from './components/Dashboard.tsx';
+import Accounts from './components/Accounts.tsx';
+import Finance from './components/Finance.tsx';
+import Strategy from './components/Strategy.tsx';
+import Kanban from './components/Kanban.tsx';
+import { Account, FinanceRecord } from './types.ts';
+import { MOCK_ACCOUNTS } from './constants.tsx';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
