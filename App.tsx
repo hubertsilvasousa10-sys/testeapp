@@ -5,36 +5,49 @@ import Accounts from './components/Accounts.tsx';
 import Finance from './components/Finance.tsx';
 import Strategy from './components/Strategy.tsx';
 import Kanban from './components/Kanban.tsx';
-import { Account, FinanceRecord, KanbanTask } from './types.ts';
+import { Account, FinanceRecord } from './types.ts';
 import { MOCK_ACCOUNTS } from './constants.tsx';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [loading, setLoading] = useState(true);
   
-  // Estado persistente
+  // Estado persistente com tratamento de erro
   const [accounts, setAccounts] = useState<Account[]>(() => {
-    const saved = localStorage.getItem('darkstream_accounts');
-    return saved ? JSON.parse(saved) : MOCK_ACCOUNTS;
+    try {
+      const saved = localStorage.getItem('darkstream_accounts');
+      return saved ? JSON.parse(saved) : MOCK_ACCOUNTS;
+    } catch (e) {
+      console.warn("Acesso ao localStorage negado ou corrompido.");
+      return MOCK_ACCOUNTS;
+    }
   });
   
   const [financeRecords, setFinanceRecords] = useState<FinanceRecord[]>(() => {
-    const saved = localStorage.getItem('darkstream_finance');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('darkstream_finance');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
   });
 
   const [selectedAccountId, setSelectedAccountId] = useState<string | null>(null);
 
   useEffect(() => {
-    localStorage.setItem('darkstream_accounts', JSON.stringify(accounts));
+    try {
+      localStorage.setItem('darkstream_accounts', JSON.stringify(accounts));
+    } catch (e) {}
   }, [accounts]);
 
   useEffect(() => {
-    localStorage.setItem('darkstream_finance', JSON.stringify(financeRecords));
+    try {
+      localStorage.setItem('darkstream_finance', JSON.stringify(financeRecords));
+    } catch (e) {}
   }, [financeRecords]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 500);
+    const timer = setTimeout(() => setLoading(false), 800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -107,7 +120,7 @@ const App: React.FC = () => {
     <div className="flex min-h-screen bg-[#050505] text-gray-200 w-full overflow-x-hidden selection:bg-cyan-500/30">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
       <main className="flex-1 p-4 md:p-8 ml-0 lg:ml-64 pt-20 lg:pt-8 pb-24 lg:pb-8">
-        <div className="max-w-6xl mx-auto transition-all duration-500">
+        <div className="max-w-6xl mx-auto">
           {renderContent()}
         </div>
       </main>
