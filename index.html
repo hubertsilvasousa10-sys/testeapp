@@ -6,7 +6,6 @@
     <meta name="theme-color" content="#050505">
     <title>DarkStream Master - Gestão Profissional Dark</title>
     
-    <!-- Polyfill para evitar erro de 'process is not defined' no browser -->
     <script>
       window.process = {
         env: {
@@ -66,8 +65,6 @@
 </head>
 <body>
     <div id="root"></div>
-    <!-- No Netlify, sem build, arquivos .tsx podem falhar se o navegador não suportar transpiladores on-the-fly. 
-         Geralmente o ambiente do AI Studio provê esse suporte. No Netlify Puro, renomear para .js costuma ser necessário se não houver build step. -->
     <script type="module" src="index.tsx"></script>
 </body>
 </html>
